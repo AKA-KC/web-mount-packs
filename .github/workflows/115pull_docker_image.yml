@@ -1,0 +1,42 @@
+name: docker build and push
+
+on:
+  release:
+    branches: [ main ]
+    types: released
+    # 将在main分支的release发布时自动运行该流程
+  workflow_dispatch:
+    # 将在GitHub Action界面创建一个run workflow按钮，点击后执行该流程
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get the tag name
+        run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+        # 获取release tag，在创建镜像时会用到
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Docker Setup Buildx
+        uses: docker/setup-buildx-action@v1.3.0
+        # 启用Buildx
+      - name: Login
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+            # 登陆DockerHub账号，供推送镜像使用，这里的secrets需要在仓库设置页面添加
+      - name: Build and Push with Version Tag
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64,linux/arm
+          push: true
+          tags: |
+            crosstree/docker-dog:${{ env.TAG }}
+            crosstree/docker-dog:latest
+          # 使用仓库根目录中的Dockerfile构建三个平台的镜像，并推送到xxx/abc仓库，使用之前获取的tag
