@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 # EXPOSE 8000
 
 # 运行Python脚本
-CMD ["python", "your_script.py"]
+CMD ["python", "web-115-302-pull.py"]
