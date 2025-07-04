@@ -257,7 +257,7 @@ class P115Offline:
                 request=self.async_request if async_ else self.request, 
                 async_=async_, 
             )))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def clear(
@@ -327,7 +327,7 @@ class P115Offline:
             if default is undefined:
                 raise LookupError(f"no such hash: {hash!r}")
             return default
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_length(
@@ -355,7 +355,7 @@ class P115Offline:
                 async_=async_, # type: ignore
             )
             return check_response(resp)["count"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_download_paths_raw(
@@ -384,7 +384,7 @@ class P115Offline:
                 async_=async_, 
             )
             return check_response(resp)["data"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_download_paths(
@@ -532,7 +532,7 @@ class P115Offline:
                 int(resp['cid']), 
                 async_=async_, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def has(
@@ -618,7 +618,7 @@ class P115Offline:
                 if page >= resp["page_count"]:
                     return
                 page += 1
-        return run_gen_step_iter(gen_step, may_call=False, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def list(
@@ -661,7 +661,7 @@ class P115Offline:
                 async_=async_, 
             )
             return list(map(normalize_attr, check_response(resp)["tasks"]))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def remove(
@@ -790,5 +790,5 @@ class P115Offline:
                     check_response(resp)
             resp["sha1"] = sha
             return resp
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 

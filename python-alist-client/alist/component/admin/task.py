@@ -121,7 +121,7 @@ class AlistUploadTaskList:
                 async_=async_, 
                 **request_kwargs, 
             )
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def clear_done(
@@ -245,7 +245,7 @@ class AlistUploadTaskList:
             if default is undefined:
                 raise LookupError(f"no such tid: {tid!r}")
             return default
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_length(
@@ -276,7 +276,7 @@ class AlistUploadTaskList:
                 **request_kwargs, 
             )
             return len(ls)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def exists(
@@ -311,7 +311,7 @@ class AlistUploadTaskList:
                 **request_kwargs, 
             )
             return resp is not None
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def iter(
@@ -376,7 +376,7 @@ class AlistUploadTaskList:
                 **request_kwargs, 
             )
             return check_response(resp)["data"] or []
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def list_undone(
@@ -410,7 +410,7 @@ class AlistUploadTaskList:
                 **request_kwargs, 
             )
             return check_response(resp)["data"] or []
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def remove(
@@ -451,7 +451,7 @@ class AlistUploadTaskList:
                 async_=async_, 
                 **request_kwargs, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def retry(
@@ -561,7 +561,7 @@ class AlistUploadTaskList:
                 seen = {t["id"] for t in tasks}
                 tasks.extend(t for t in undone if t["id"] not in seen)
             return tasks
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
 
 class AlistCopyTaskList(AlistUploadTaskList):

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-alist"
-version = "0.0.13.11.2"
+version = "0.0.13.12"
 description = "Python wrapper for alist."
 authors = ["ChenyangGao <wosiwujm@gmail.com>"]
 license = "MIT"
@@ -13,7 +13,7 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3 :: Only",
     "Operating System :: OS Independent",
     "Intended Audience :: Developers",
@@ -26,7 +26,7 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 ed2k = ">=0.0.1.1"
 glob_pattern = "*"
 http_response = "*"
@@ -44,7 +44,7 @@ python-download = ">=0.0.3"
 python-filewrap = ">=0.2.5"
 python-httpfile = ">=0.0.5"
 python-http_request = ">=0.0.6"
-python-iterutils = ">=0.2"
+python-iterutils = ">=0.2.4.1"
 python-property = ">=0.0.3"
 python-retrytools = ">=0.0.2"
 python-undefined = "*"

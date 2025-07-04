@@ -126,7 +126,7 @@ class P115Recyclebin:
             if default is undefined:
                 raise LookupError(f"no such id: {id!r}")
             return default
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_length(
@@ -155,7 +155,7 @@ class P115Recyclebin:
                 async_=async_, 
             )
             return int(check_response(resp)["count"])
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def has(
@@ -190,7 +190,7 @@ class P115Recyclebin:
                 ))
             else:
                 return any(item["id"] == ids for item in self.iter())
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def iter(
@@ -320,7 +320,7 @@ class P115Recyclebin:
             if resp["offset"] != offset:
                 return []
             return resp["data"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def remove(

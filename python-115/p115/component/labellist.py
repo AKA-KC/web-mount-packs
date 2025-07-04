@@ -99,7 +99,7 @@ class P115LabelList:
                 async_=async_, 
             )
             return check_response(resp)["data"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     def clear(
         self, 
@@ -122,7 +122,7 @@ class P115LabelList:
                 request=self.async_request if async_ else self.request, 
                 async_=async_, 
             )
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def edit(
@@ -172,7 +172,7 @@ class P115LabelList:
                 request=self.async_request if async_ else self.request, 
                 async_=async_, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     def get(
         self, 
@@ -216,7 +216,7 @@ class P115LabelList:
             if default is undefined:
                 raise LookupError(f"no such item: {id_or_name!r}")
             return default
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_length(
@@ -245,7 +245,7 @@ class P115LabelList:
                 async_=async_, 
             )
             return check_response(resp)["data"]["total"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def has(
@@ -289,7 +289,7 @@ class P115LabelList:
                     ))
                 else:
                     return any(item["name"] == name for item in self.iter(keyword=name))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def id_of(
@@ -323,7 +323,7 @@ class P115LabelList:
                 default=undefined, 
                 async_=async_, 
             ))["id"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def iter(
@@ -497,7 +497,7 @@ class P115LabelList:
                 request=self.async_request if async_ else self.request, 
                 async_=async_, 
             ))
-        return run_gen_step_iter(gen_step, may_call=False, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def list(
@@ -579,7 +579,7 @@ class P115LabelList:
                 async_=async_, 
             )
             return check_response(resp)["data"]["list"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def remove(
@@ -614,7 +614,7 @@ class P115LabelList:
                 async_=async_, 
             )
             return check_response(resp)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     set = edit
 

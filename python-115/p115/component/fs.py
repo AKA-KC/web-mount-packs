@@ -313,7 +313,7 @@ class P115Path(P115PathBase):
             if attr is None:
                 return None
             return type(self)(self.fs, attr)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def count(
@@ -374,7 +374,7 @@ class P115Path(P115PathBase):
                     async_=async_, 
                 )), 
             )
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def move(
@@ -415,7 +415,7 @@ class P115Path(P115PathBase):
             self.__dict__.clear()
             self.__dict__.update(attr)
             return self
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def remove(
@@ -487,7 +487,7 @@ class P115Path(P115PathBase):
             self.__dict__.clear()
             self.__dict__.update(attr)
             return self
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def renames(
@@ -528,7 +528,7 @@ class P115Path(P115PathBase):
             self.__dict__.clear()
             self.__dict__.update(attr)
             return self
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def replace(
@@ -569,7 +569,7 @@ class P115Path(P115PathBase):
             self.__dict__.clear()
             self.__dict__.update(attr)
             return self
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def rmdir(
@@ -644,7 +644,7 @@ class P115Path(P115PathBase):
                     async_=async_, 
                 )), 
             )
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     unlink = remove
 
@@ -682,7 +682,7 @@ class P115Path(P115PathBase):
                     async_=async_, 
                 )), 
             )
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def write_text(
@@ -730,7 +730,7 @@ class P115Path(P115PathBase):
                     async_=async_, 
                 )), 
             )
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     cp = copy
     mv = move
@@ -1017,7 +1017,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                     raise OSError(errno.EINVAL, resp)
                 case _:
                     raise OSError(errno.EIO, resp)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def fs_file_skim(
@@ -1058,7 +1058,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
             if resp.get("error") == "文件不存在":
                 raise FileNotFoundError(errno.ENOENT, resp)
             raise OSError(errno.EIO, resp)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def fs_files(
@@ -1103,7 +1103,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
             if int(resp["path"][-1]["cid"]) != id:
                 raise NotADirectoryError(errno.ENOTDIR, f"{id!r} is not a directory")
             return resp
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def fs_search(
@@ -1208,7 +1208,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                         if attr["pickcode"] == pickcode:
                             return attr
                     raise
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def space_summury(
@@ -1375,7 +1375,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                         path_to_id.pop(path_old + "/"[:is_directory], None)
 
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def _attr_path(
@@ -1572,7 +1572,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                             f"no such file {name!r} (in {parent} @ {joins(patht[:i])!r})", 
                         )
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     def _get_ancestors_from_response(
         self, 
@@ -1681,7 +1681,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 return self._get_ancestors_from_response(resp, attr)
             else:
                 return self._get_ancestors_from_response(None, attr)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def attr(
@@ -1744,7 +1744,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                     f"{attr['id']} (id={attr['id']}) is not directory"
                 )
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def iterdir(
@@ -1925,7 +1925,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                                 raise RuntimeError(f"{id} detected count changes during iteration")
                             for attr in resp["data"]:
                                 yield Yield(normalize_attr2(attr, ancestor))
-                    return YieldFrom(run_gen_step_iter(iterdir(), async_=async_))
+                    return YieldFrom(run_gen_step_iter(iterdir(), async_))
                 else:
                     def iterdir():
                         children = id_to_readdir.get(id)
@@ -2004,12 +2004,12 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                         async def request():
                             d: AttrDictWithAncestors = AttrDictWithAncestors(lock=Lock(), alock=AsyncLock())
                             async with self._iterdir_locks.setdefault(id, d)["alock"]:
-                                return {a["id"]: a async for a in run_gen_step_iter(iterdir, async_=True)}
+                                return {a["id"]: a async for a in run_gen_step_iter(iterdir, True)}
                         children = yield request
                     else:
                         d: AttrDictWithAncestors = AttrDictWithAncestors(lock=Lock(), alock=AsyncLock())
                         with self._iterdir_locks.setdefault(id, d)["lock"]:
-                            children = {a["id"]: a for a in run_gen_step_iter(iterdir, async_=False)}
+                            children = {a["id"]: a for a in run_gen_step_iter(iterdir, False)}
                     id_to_readdir[id] = children
             else:
                 children = id_to_readdir[id]
@@ -2047,7 +2047,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
             if not fc_mix:
                 values.sort(key=lambda attr: not attr["is_directory"], reverse=not asc)
             return YieldFrom(values[start:stop])
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def copy(
@@ -2216,7 +2216,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 else:
                     onerror(e)
                 return None
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     # TODO: 使用 fs_batch_* 方法，尽量加快执行速度，但是如果任务数过大（大于 5 万）而报错，则尝试对任务进行拆分
     # TODO: 删除、还原、复制、移动等操作均遵此例，也就是尽量用 batch 方法
@@ -2373,7 +2373,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                         async_=async_, 
                     )
             return dst_attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def count(
@@ -2416,7 +2416,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 "folder_count": resp["folder_count"], 
                 "path": resp["path"], 
             }
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def desc(
@@ -2469,7 +2469,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                     request=self.async_request if async_ else self.request, 
                     async_=async_, 
                 )))["file_description"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def dirlen(
@@ -2503,7 +2503,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
         def gen_step():
             count = yield self.count(id_or_path, pid=pid, async_=async_)
             return count["count"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_ancestors(
@@ -2537,7 +2537,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
         def gen_step():
             attr = yield partial(self.attr, id_or_path, pid=pid, async_=async_)
             return attr["ancestors"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_id_from_pickcode(
@@ -2578,7 +2578,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 async_=async_, 
             )
             return info["id"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_info_from_pickcode(
@@ -2619,7 +2619,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 async_=async_, 
             )
             return resp.__dict__
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_path(
@@ -2656,7 +2656,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
             def gen_step():
                 patht = yield self.get_patht(id_or_path, async_=async_)
                 return joins(patht)
-            return run_gen_step(gen_step, async_=async_)
+            return run_gen_step(gen_step, async_)
         return super().get_path(id_or_path, pid=pid, async_=async_)
 
     @overload
@@ -2707,7 +2707,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                             ls.extend(p["name"] for p in resp["path"][1:])
                         ls.append(name)
                 return ls
-            return run_gen_step(gen_step, async_=async_)
+            return run_gen_step(gen_step, async_)
         return super().get_patht(id_or_path, pid=pid, async_=async_)
 
     @overload
@@ -2742,7 +2742,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
         def gen_step():
             attr = yield partial(self.attr, id_or_path, pid=pid, async_=async_)
             return attr.get("pickcode", "")
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_url(
@@ -2791,7 +2791,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 request=self.async_request if async_ else self.request, 
                 async_=async_, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_url_from_pickcode(
@@ -2882,7 +2882,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 )
                 check_response(resp)
                 return hidden
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def hidden_mode(
@@ -2911,7 +2911,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 async_=async_, 
             )
             return resp["data"]["show"] == "1"
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def hidden_switch(
@@ -2956,7 +2956,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 async_=async_, 
             )
             return check_response(resp)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def iter_repeat(
@@ -3011,7 +3011,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 if len(data) < page_size:
                     break
                 payload["offset"] += page_size
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def labels(
@@ -3086,7 +3086,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 )))
                 attr_labels[:] = my_labels.values()
             return attr_labels
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def makedirs(
@@ -3172,7 +3172,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
             if not exist_ok and exists:
                 raise FileExistsError(errno.EEXIST, f"{path!r} (in {pid!r}) exists")
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def mkdir(
@@ -3261,7 +3261,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 )
             resp = yield partial(self.fs_mkdir, name, pid=pid, async_=async_)
             return (yield partial(self.attr, int(resp["cid"]), async_=async_))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def move(
@@ -3325,7 +3325,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 errno.EEXIST, 
                 f"destination already exists: {src_path!r} -> {dst_path!r}", 
             )
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     # TODO: 由于 115 网盘不支持删除里面有超过 5 万个文件等目录，因此执行失败时需要拆分任务
     # TODO: 就算删除和还原执行返回成功，后台可能依然在执行，需要等待几秒钟，前一批完成再执行下一批
@@ -3379,7 +3379,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
             yield partial(self.fs_delete, id, async_=async_)
             self._clear_cache(attr)
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def removedirs(
@@ -3439,7 +3439,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 yield partial(self.fs_delete, delid)
                 self._clear_cache(parent)
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def rename(
@@ -3599,7 +3599,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                     dst_name = data["file_name"]
                     return (yield partial(self.attr, [dst_name], pid=dst_pid, async_=async_))
             return (yield partial(self.attr, src_id, async_=async_))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def renames(
@@ -3640,7 +3640,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
             if parent_id != attr["parent_id"]:
                 yield partial(self.removedirs, parent_id, async_=async_)
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def replace(
@@ -3727,7 +3727,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
             yield partial(self.fs_delete, id, async_=async_)
             self._clear_cache(attr) 
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def rmtree(
@@ -3809,7 +3809,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                     async_=async_, 
                 )
                 return score
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def search(
@@ -3909,7 +3909,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                     break
                 if offset + page_size > 10_000:
                     payload["page_size"] = 10_000 - offset
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def star(
@@ -3960,7 +3960,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                     async_=async_, 
                 )))
                 return star
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def stat(
@@ -4006,7 +4006,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 cast(float, attr.get("mtime", 0)), # mtime
                 cast(float, attr.get("ctime", 0)), # ctime
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def touch(
@@ -4051,7 +4051,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                     return (yield partial(self.mkdir, id_or_path, pid=pid, async_=async_))
                 else:
                     return (yield partial(self.upload, b"", id_or_path, pid=pid, async_=async_))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     # TODO: 增加功能，返回一个 Task 对象，可以获取上传进度，可随时取消
     # TODO: 因为文件名可以重复，因此确保上传成功后再删除
@@ -4153,7 +4153,7 @@ class P115FileSystem(P115FileSystemBase[P115Path]):
                 except OSError:
                     pass
             return resp
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     # TODO: 支持异步
     # TODO: 上传和下载都要支持多线程

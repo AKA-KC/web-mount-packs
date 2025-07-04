@@ -91,7 +91,7 @@ class P115PathBase(Generic[P115FSType], Mapping, PathLike[str]):
         def gen_step():
             yield self.get_attr(async_=async_, **kwargs)
             return self
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     def __contains__(self, key, /) -> bool:
         return key in self.attr
@@ -356,7 +356,7 @@ class P115PathBase(Generic[P115FSType], Mapping, PathLike[str]):
                 return True
             except FileNotFoundError:
                 return False
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @cached_property
     def file_extension(self, /) -> None | str:
@@ -388,7 +388,7 @@ class P115PathBase(Generic[P115FSType], Mapping, PathLike[str]):
             if attr is not self.attr:
                 self.attr = attr
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_directory(
@@ -416,7 +416,7 @@ class P115PathBase(Generic[P115FSType], Mapping, PathLike[str]):
                 self.get_parent, 
                 async_=async_, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_url(
@@ -469,7 +469,7 @@ class P115PathBase(Generic[P115FSType], Mapping, PathLike[str]):
                 return self
             attr = yield partial(self.fs.attr, self["parent_id"], async_=async_)
             return type(self)(self.fs, attr)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_parents(
@@ -802,7 +802,7 @@ class P115PathBase(Generic[P115FSType], Mapping, PathLike[str]):
                 return self
             attr = yield partial(self.fs.attr, names, pid=self.id, async_=async_)
             return type(self)(self.fs, attr)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def joinpath(
@@ -843,7 +843,7 @@ class P115PathBase(Generic[P115FSType], Mapping, PathLike[str]):
             else:    
                 attr = yield partial(self.fs.attr, path_new, async_=async_)
             return type(self)(self.fs, attr)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def listdir(
@@ -1786,7 +1786,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                     **kwargs, 
                 )
             return path_class(self, attr)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def chdir(
@@ -1847,7 +1847,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                     errno.ENOTDIR, 
                     f"{id_or_path!r} (in {pid!r}) is not a directory", 
                 )
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def dictdir(
@@ -2006,7 +2006,7 @@ class P115FileSystemBase(Generic[P115PathType]):
     ) -> int | Coroutine[Any, Any, int]:
         def gen_step():
             return len((yield self.listdir_attr(id_or_path, pid=pid, async_=async_)))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def download(
@@ -2137,7 +2137,7 @@ class P115FileSystemBase(Generic[P115PathType]):
             if callable(submit) or submit:
                 yield task.start
             return task
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     # TODO: 增加条件化重试机制
     @overload
@@ -2263,7 +2263,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                             yield partial(onerror, e)
                         elif onerror:
                             raise
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def ed2k(
@@ -2304,7 +2304,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 async_=async_, 
             )
             return (yield self.client.ed2k(url, headers, name=url.get("file_name"), async_=async_))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def enumdir(
@@ -2391,7 +2391,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 return True
             except FileNotFoundError:
                 return False
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     def getcid(self, /) -> int:
         return self.id
@@ -2444,7 +2444,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 return 0
             attr = yield partial(self.attr, id_or_path, pid=pid, async_=async_, **kwargs)
             return attr["id"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_path(
@@ -2508,7 +2508,7 @@ class P115FileSystemBase(Generic[P115PathType]):
             if parent:
                 ppatht = ppatht[1:-parent]
             return joins([*ppatht, *patht])
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_patht(
@@ -2572,7 +2572,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 ppatht = ppatht[1:-parent]
             ppatht.extend(patht)
             return ppatht
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def glob(
@@ -2739,7 +2739,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                             elif subpath.is_dir():
                                 yield from glob_step_match(subpath, j)
             yield from glob_step_match(path, i)
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def hash(
@@ -2796,7 +2796,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 headers=headers, 
                 async_=async_, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def hashes(
@@ -2854,7 +2854,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 headers=headers, 
                 async_=async_, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def isdir(
@@ -2893,7 +2893,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 return attr["is_directory"]
             except FileNotFoundError:
                 return False
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def isfile(
@@ -2932,7 +2932,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 return not attr["is_directory"]
             except FileNotFoundError:
                 return False
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def is_empty(
@@ -2972,7 +2972,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 return (yield self.dirlen(id_or_path, pid=pid, async_=async_)) == 0
             else:
                 return attr["size"] == 0
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def iter_bfs(
@@ -3068,7 +3068,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                         yield partial(onerror, e)
                     elif onerror:
                         raise
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def iter_dfs(
@@ -3172,7 +3172,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                     ))
                 if yield_me and not topdown:
                     yield Yield(path)
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def iter(
@@ -3485,7 +3485,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 stop=stop, 
                 async_=async_, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def read_bytes_range(
@@ -3526,7 +3526,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 bytes_range=bytes_range, 
                 async_=async_, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def read_block(
@@ -3573,7 +3573,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 start=offset, 
                 async_=async_, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def read_text(
@@ -3626,7 +3626,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 newline=newline, 
             )
             return tio.read()
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def rglob(
@@ -3802,7 +3802,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                         _depth=next_depth, 
                         async_=async_, 
                     )
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def walk_attr_bfs(
@@ -3876,7 +3876,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                         yield partial(onerror, e)
                     elif onerror:
                         raise
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def walk_attr_dfs(
@@ -3959,7 +3959,7 @@ class P115FileSystemBase(Generic[P115PathType]):
                 ))
             if yield_me and not topdown:
                 yield Yield((parent_path, dirs, files))
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def walk(

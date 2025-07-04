@@ -123,7 +123,7 @@ class AlistPath(Mapping, PathLike[str]):
         def gen_step():
             yield self.get_attr(async_=async_, **kwargs)
             return self
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     def __contains__(self, key, /) -> bool:
         return key in self.__dict__
@@ -258,7 +258,7 @@ class AlistPath(Mapping, PathLike[str]):
             if not dst:
                 return None
             return type(self)(self.fs, dst, dst_password or self.password)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @property
     def directory(self, /) -> Self:
@@ -374,7 +374,7 @@ class AlistPath(Mapping, PathLike[str]):
                 return True
             except FileNotFoundError:
                 return False
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @property
     def file_extension(self, /) -> None | str:
@@ -408,7 +408,7 @@ class AlistPath(Mapping, PathLike[str]):
             attr = yield self.fs.attr(self.path, async_=async_, **kwargs)
             self.__dict__.update(attr)
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_raw_url(
@@ -769,7 +769,7 @@ class AlistPath(Mapping, PathLike[str]):
                 async_=async_, 
             )
             return self
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def move(
@@ -809,7 +809,7 @@ class AlistPath(Mapping, PathLike[str]):
             if self["path"] == dst:
                 return self
             return type(self)(self.fs, dst, dst_password or self.password)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @cached_property
     def name(self, /) -> str:
@@ -1083,7 +1083,7 @@ class AlistPath(Mapping, PathLike[str]):
             if self["path"] == dst:
                 return self
             return type(self)(self.fs, dst, dst_password or self.password)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def renames(
@@ -1123,7 +1123,7 @@ class AlistPath(Mapping, PathLike[str]):
             if self["path"] == dst:
                 return self
             return type(self)(self.fs, dst, dst_password or self.password)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def replace(
@@ -1163,7 +1163,7 @@ class AlistPath(Mapping, PathLike[str]):
             if self["path"] == dst:
                 return self
             return type(self)(self.fs, dst, dst_password or self.password)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def rglob(
@@ -1317,7 +1317,7 @@ class AlistPath(Mapping, PathLike[str]):
         def gen_step():
             yield self.fs.touch(self, async_=async_)
             return self
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     def tree(
         self, 
@@ -1522,7 +1522,7 @@ class AlistPath(Mapping, PathLike[str]):
         def gen_step():
             yield self.fs.write_bytes(self, data, async_=async_)
             return self
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def write_text(
@@ -1568,7 +1568,7 @@ class AlistPath(Mapping, PathLike[str]):
                 async_=async_, 
             )
             return self
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     list = listdir_path
 
@@ -1721,7 +1721,7 @@ class AlistFileSystem:
             token = next(item["value"] for item in check_response(resp)["data"] if item["key"] == "token")
             self.__dict__["token"] = token
             return token
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def reset_token(
@@ -1751,7 +1751,7 @@ class AlistFileSystem:
             token = check_response(resp)["data"]
             self.__dict__["token"] = token
             return token
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def fs_batch_rename(
@@ -2770,7 +2770,7 @@ class AlistFileSystem:
             attr["path"] = path
             attr["password"] = password
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     def chdir(
         self, 
@@ -2802,7 +2802,7 @@ class AlistFileSystem:
                     self.__dict__["path"] = path
                 else:
                     raise NotADirectoryError(errno.ENOTDIR, attr)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def copy(
@@ -3024,7 +3024,7 @@ class AlistFileSystem:
                     yield partial(onerror, e)
                 elif onerror:
                     raise
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def copytree(
@@ -3192,7 +3192,7 @@ class AlistFileSystem:
                         async_=async_, 
                     ))
             return result
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def download(
@@ -3336,7 +3336,7 @@ class AlistFileSystem:
             if callable(submit) or submit:
                 yield task.start
             return task
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     # TODO: 增加条件化重试机制
     # TODO: 后台开启一个下载管理器，可以管理各个下载任务，所有任务完成后，下载管理器关闭，下载任务可以排队
@@ -3470,7 +3470,7 @@ class AlistFileSystem:
                             yield partial(onerror, e)
                         elif onerror:
                             raise
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def ed2k(
@@ -3511,7 +3511,7 @@ class AlistFileSystem:
             if attr["is_dir"]:
                 raise IsADirectoryError(errno.EISDIR, attr["path"])
             return (yield self.client.ed2k(attr["raw_url"], headers, name=attr["name"], async_=async_))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def enumdir(
@@ -3617,7 +3617,7 @@ class AlistFileSystem:
                 return True
             except FileNotFoundError:
                 return False
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     def getcwd(self, /) -> str:
         return self.path
@@ -3662,7 +3662,7 @@ class AlistFileSystem:
                 async_=async_, 
             )
             return resp["data"]["total"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_raw_url(
@@ -3712,7 +3712,7 @@ class AlistFileSystem:
             if attr["is_dir"]:
                 raise IsADirectoryError(errno.EISDIR, path)
             return attr["raw_url"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     def get_url(
         self, 
@@ -3906,7 +3906,7 @@ class AlistFileSystem:
                                 elif subpath.is_dir():
                                     yield from glob_step_match(subpath, j)
             yield from glob_step_match(path, i)
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def isdir(
@@ -3946,7 +3946,7 @@ class AlistFileSystem:
                 return attr["is_dir"]
             except FileNotFoundError:
                 return False
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def isfile(
@@ -3986,7 +3986,7 @@ class AlistFileSystem:
                 return not attr["is_dir"]
             except FileNotFoundError:
                 return False
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def is_empty(
@@ -4031,7 +4031,7 @@ class AlistFileSystem:
                 return (yield self.dirlen(path, password, async_=async_)) == 0
             else:
                 return attr["size"] == 0
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def is_storage(
@@ -4083,7 +4083,7 @@ class AlistFileSystem:
                     except FileNotFoundError:
                         return False
                 return attr["hash_info"] is None
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def iter_bfs(
@@ -4181,7 +4181,7 @@ class AlistFileSystem:
                         yield partial(onerror, e)
                     elif onerror:
                         raise
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def iter_dfs(
@@ -4287,7 +4287,7 @@ class AlistFileSystem:
                     ))
                 if yield_me and not topdown:
                     yield Yield(path)
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def iter(
@@ -4420,7 +4420,7 @@ class AlistFileSystem:
                     if len(data) < per_page:
                         break
                     page += 1
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def list_storages(
@@ -4444,7 +4444,7 @@ class AlistFileSystem:
         def gen_step():
             resp = yield self.fs_storage_list(async_=async_)
             return resp["data"]["content"] or []
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def listdir(
@@ -4502,7 +4502,7 @@ class AlistFileSystem:
                 return [item["path"] for item in data]
             else:
                 return [item["name"] for item in data]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def listdir_attr(
@@ -4570,7 +4570,7 @@ class AlistFileSystem:
                 attr["password"] = password
                 data[i] = AttrDict(attr)
             return data
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def listdir_path(
@@ -4619,7 +4619,7 @@ class AlistFileSystem:
                 async_=async_, 
             )
             return [AlistPath(self, **attr) for attr in data]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def makedirs(
@@ -4673,7 +4673,7 @@ class AlistFileSystem:
                 else:
                     raise NotADirectoryError(errno.ENOTDIR, path)
             return path
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def mkdir(
@@ -4728,7 +4728,7 @@ class AlistFileSystem:
                 if attr["is_dir"]:
                     raise FileExistsError(errno.EEXIST, path)
                 raise NotADirectoryError(errno.ENOTDIR, path) 
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def move(
@@ -4821,7 +4821,7 @@ class AlistFileSystem:
                     yield self.fs_move(dirname(src_path), dst_path, [dst_filename], async_=async_)
                     return dst_filepath
                 raise FileExistsError(errno.EEXIST, f"destination path {dst_path!r} already exists")
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     # TODO: 支持异步
     def open(
@@ -4919,7 +4919,7 @@ class AlistFileSystem:
                 async_=async_, 
                 **request_kwargs, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def read_bytes_range(
@@ -4971,7 +4971,7 @@ class AlistFileSystem:
                 async_=async_, 
                 **request_kwargs, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def read_block(
@@ -5029,7 +5029,7 @@ class AlistFileSystem:
                 async_=async_, 
                 **request_kwargs, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def read_text(
@@ -5086,7 +5086,7 @@ class AlistFileSystem:
                 newline=newline, 
             )
             return tio.read()
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def remove(
@@ -5168,7 +5168,7 @@ class AlistFileSystem:
                 dir_, name = splitpath(path)
                 yield self.fs_remove(dir_, [name], async_=async_)
             return path
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def removedirs(
@@ -5258,7 +5258,7 @@ class AlistFileSystem:
             except OSError:
                 pass
             return path
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def rename(
@@ -5414,7 +5414,7 @@ class AlistFileSystem:
                     self.fs_rename(joinpath(src_dir, tempname), src_name, async_=async_)
                     raise
             return dst_path
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def renames(
@@ -5465,7 +5465,7 @@ class AlistFileSystem:
                 except OSError:
                     pass
             return dst_path
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def replace(
@@ -5598,7 +5598,7 @@ class AlistFileSystem:
             dir_, name = splitpath(path)
             yield self.fs_remove(dir_, [name], async_=async_)
             return path
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def rmtree(
@@ -5732,7 +5732,7 @@ class AlistFileSystem:
                 attr["mtime"], # mtime
                 attr["ctime"], # ctime
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def storage_of(
@@ -5797,7 +5797,7 @@ class AlistFileSystem:
                     elif commonpath((path, mount_path)) == mount_path and len(mount_path) > len(storage):
                         storage = mount_path
                 return storage
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     def tree(
         self, 
@@ -5851,7 +5851,7 @@ class AlistFileSystem:
                         _depth=next_depth, 
                         async_=async_, 
                     )
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def touch(
@@ -5891,7 +5891,7 @@ class AlistFileSystem:
                 else:
                     yield self.upload(b"", path, password, async_=async_)
             return path
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def upload(
@@ -5979,7 +5979,7 @@ class AlistFileSystem:
                 except OSError:
                     pass
             return path
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def upload_tree(
@@ -6084,7 +6084,7 @@ class AlistFileSystem:
                     onerror(e)
                 elif onerror:
                     raise
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     unlink = remove
 
@@ -6162,7 +6162,7 @@ class AlistFileSystem:
                         yield partial(onerror, e)
                     elif onerror:
                         raise
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def walk_attr_dfs(
@@ -6252,7 +6252,7 @@ class AlistFileSystem:
                 ))
             if yield_me and not topdown:
                 yield Yield((top, dirs, files))
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def walk(

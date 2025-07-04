@@ -309,7 +309,7 @@ class AlistClient:
             else:
                 self.headers.pop("Authorization", None)
             ns.pop("base_path", None)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @classmethod
     def from_auth(
@@ -344,7 +344,7 @@ class AlistClient:
         def gen_step():
             resp = yield partial(self.me, async_=async_)
             return resp["data"]["base_path"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     # [auth](https://docs.oplist.org/guide/api/auth.html)
 
@@ -2314,7 +2314,7 @@ class AlistClient:
                 async_=async_, 
                 **request_kwargs, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def fs_put(
@@ -2518,7 +2518,7 @@ class AlistClient:
                 async_=async_, 
                 **request_kwargs, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     # [public](https://docs.oplist.org/guide/api/public.html)
 
@@ -5582,7 +5582,7 @@ class AlistClient:
                 async_=async_, 
                 **request_kwargs, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def read_bytes_range(
@@ -5689,7 +5689,7 @@ class AlistClient:
                 async_=async_, 
                 **request_kwargs, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @cached_property
     def fs(self, /) -> AlistFileSystem:

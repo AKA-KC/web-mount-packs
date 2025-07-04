@@ -209,7 +209,7 @@ class P115ZipFileSystem(P115FileSystemBase[P115ZipPath]):
                             put(attr["id"])
                 self.__dict__["full_loaded"] = True
                 raise FileNotFoundError(errno.ENOENT, f"no such id: {id!r}")
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def _attr_path(
@@ -358,7 +358,7 @@ class P115ZipFileSystem(P115FileSystemBase[P115ZipPath]):
                             f"no such file {name!r} (in {parent} @ {joins(patht[:i])!r})", 
                         )
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def attr(
@@ -414,7 +414,7 @@ class P115ZipFileSystem(P115FileSystemBase[P115ZipPath]):
                     f"{attr['id']} (id={attr['id']}) is not directory"
                 )
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     # TODO: 支持异步
     def extract(
@@ -465,7 +465,7 @@ class P115ZipFileSystem(P115FileSystemBase[P115ZipPath]):
         def gen_step():
             attr = yield partial(self.attr, id_or_path, pid=pid, async_=async_)
             return deepcopy(attr["ancestors"])
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_url(
@@ -514,7 +514,7 @@ class P115ZipFileSystem(P115FileSystemBase[P115ZipPath]):
                 request=self.async_request if async_ else self.request, 
                 async_=async_, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def iterdir(
@@ -627,7 +627,7 @@ class P115ZipFileSystem(P115FileSystemBase[P115ZipPath]):
                 children = self.pid_to_children[id] = tuple(ls)
                 self.id_to_attr.update((attr["id"], attr) for attr in children)
             return YieldFrom(children[start:stop])
-        return run_gen_step_iter(gen_step, may_call=False, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def stat(
@@ -674,5 +674,5 @@ class P115ZipFileSystem(P115FileSystemBase[P115ZipPath]):
                 timestamp, # mtime
                 timestamp, # ctime
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 

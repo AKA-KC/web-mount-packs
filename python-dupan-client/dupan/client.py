@@ -407,7 +407,7 @@ class DuPanClient(HTTPXClientMixin):
                 **request_kwargs, 
             )
             return resp
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     @staticmethod
@@ -983,7 +983,7 @@ class DuPanClient(HTTPXClientMixin):
                 "sign": b64encode(sign).decode("utf-8"), 
                 "timestamp": result["timestamp"], 
             }
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_templatevariable(
@@ -1235,7 +1235,7 @@ class DuPanClient(HTTPXClientMixin):
             if error_msg := etree.find_class("error-msg-list"):
                 raise OSError(tostring(error_msg[0], encoding="utf-8").decode("utf-8").strip())
             return etree.get_element_by_id("Verifier").value
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def oauth_token(
@@ -1286,7 +1286,7 @@ class DuPanClient(HTTPXClientMixin):
                 "redirect_uri": "oob", 
             }
             return self.request(url=api, params=params, async_=async_, **request_kwargs)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def share_transfer(
@@ -1372,7 +1372,7 @@ class DuPanClient(HTTPXClientMixin):
             }
             request_kwargs["headers"] = dict(request_kwargs.get("headers") or {}, Referer=url)
             return self.request(url=api, method="POST", params=params, data=data, async_=async_, **request_kwargs)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     @staticmethod
@@ -1849,7 +1849,7 @@ class DuPanClient(HTTPXClientMixin):
                 async_=async_, 
                 **request_kwargs, 
             )
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def read_bytes_range(
@@ -1964,7 +1964,7 @@ class DuPanClient(HTTPXClientMixin):
                 async_=async_, 
                 **request_kwargs, 
             )
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
 
 class DuPanShareList(HTTPXClientMixin):
@@ -2143,7 +2143,7 @@ class DuPanShareList(HTTPXClientMixin):
                 if m >= min_confirm:
                     return {"vcode": res, "vcode_str": vcode_str}
                 counter[res] = m
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def fs_list(
@@ -2268,7 +2268,7 @@ class DuPanShareList(HTTPXClientMixin):
                     )
                     return data
             raise RuntimeError("too many attempts")
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def iterdir(
@@ -2350,7 +2350,7 @@ class DuPanShareList(HTTPXClientMixin):
                     yield YieldFrom(data)
                 else:
                     yield YieldFrom(data[(page-1)*num:page*num])
-        return run_gen_step_iter(gen_step, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     def verify(
         self, 
@@ -2387,7 +2387,7 @@ class DuPanShareList(HTTPXClientMixin):
                     data.update(vcode)
                 else:
                     check_response(resp)
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
 # TODO: 回收站
 # TODO: 分享

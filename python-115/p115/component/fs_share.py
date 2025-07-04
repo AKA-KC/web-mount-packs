@@ -399,7 +399,7 @@ class P115ShareFileSystem(P115FileSystemBase[P115SharePath]):
                 async_=async_, 
             )
             return (yield partial(self._search_item, id, async_=async_))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def _attr_path(
@@ -548,7 +548,7 @@ class P115ShareFileSystem(P115FileSystemBase[P115SharePath]):
                             f"no such file {name!r} (in {parent} @ {joins(patht[:i])!r})", 
                         )
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def attr(
@@ -604,7 +604,7 @@ class P115ShareFileSystem(P115FileSystemBase[P115SharePath]):
                     f"{attr['id']} (id={attr['id']}) is not directory"
                 )
             return attr
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def dirlen(
@@ -645,7 +645,7 @@ class P115ShareFileSystem(P115FileSystemBase[P115SharePath]):
                 async_=async_, 
             )
             return resp["data"]["count"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_ancestors(
@@ -679,7 +679,7 @@ class P115ShareFileSystem(P115FileSystemBase[P115SharePath]):
         def gen_step():
             attr = yield partial(self.attr, id_or_path, pid=pid, async_=async_)
             return deepcopy(attr["ancestors"])
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_url(
@@ -733,7 +733,7 @@ class P115ShareFileSystem(P115FileSystemBase[P115SharePath]):
                 request=self.async_request if async_ else self.request, 
                 async_=async_, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def iterdir(
@@ -802,7 +802,7 @@ class P115ShareFileSystem(P115FileSystemBase[P115SharePath]):
             if stop is not None and (start >= 0 and stop >= 0 or start < 0 and stop < 0) and start >= stop:
                 return ()
             if isinstance(id_or_path, int):
-                attr = yield partial(self._attr, id_or_path, async_=async_)
+                attr: MutableMapping = yield partial(self._attr, id_or_path, async_=async_)
             elif isinstance(id_or_path, AttrDict):
                 attr = id_or_path
             elif isinstance(id_or_path, path_class):
@@ -821,7 +821,7 @@ class P115ShareFileSystem(P115FileSystemBase[P115SharePath]):
                     f"{attr['path']!r} (id={attr['id']!r}) is not a directory", 
                 )
             id = attr["id"]
-            ancestors = attr["ancestors"]
+            ancestors: list[dict] = attr["ancestors"]
             children: Sequence[AttrDict]
             try:
                 if refresh:
@@ -842,8 +842,12 @@ class P115ShareFileSystem(P115FileSystemBase[P115SharePath]):
                 add = ls.append
                 resp = yield partial(get_files, payload, async_=async_)
                 data = resp["data"]
-                for attr in map(normalize_attr, data["list"]):
-                    attr["ancestors"] = [*ancestors, {"id": attr["id"], "name": attr["name"]}]
+                for info in cast(list[dict], data["list"]):
+                    attr = normalize_attr(info)
+                    attr["ancestors"] = [
+                        *ancestors, 
+                        {"id": attr["id"], "name": attr["name"]}, 
+                    ]
                     path = attr["path"] = joinpath(dirname, escape(attr["name"]))
                     attr["share_code"] = share_code
                     attr["receive_code"] = receive_code
@@ -889,7 +893,7 @@ class P115ShareFileSystem(P115FileSystemBase[P115SharePath]):
                 if key:
                     children = sorted(children, key=key, reverse=payload.get("asc", True))
             return YieldFrom(children[start:stop])
-        return run_gen_step_iter(gen_step, may_call=False, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def receive(
@@ -943,7 +947,7 @@ class P115ShareFileSystem(P115FileSystemBase[P115SharePath]):
                 request=self.async_request if async_ else self.request, 
                 async_=async_, 
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def search(
@@ -1026,7 +1030,7 @@ class P115ShareFileSystem(P115FileSystemBase[P115SharePath]):
                     break
                 if offset + page_size > 10_000:
                     payload["page_size"] = 10_000 - offset
-        return run_gen_step_iter(gen_step, may_call=False, async_=async_)
+        return run_gen_step_iter(gen_step, async_)
 
     @overload
     def stat(
@@ -1073,5 +1077,5 @@ class P115ShareFileSystem(P115FileSystemBase[P115SharePath]):
                 timestamp, # mtime
                 timestamp, # ctime
             ))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-115"
-version = "0.0.9.8.8.6"
+version = "0.0.9.9"
 description = "Python wrapper for 115 webdisk."
 authors = ["ChenyangGao <wosiwujm@gmail.com>"]
 license = "MIT"
@@ -13,7 +13,7 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3 :: Only",
     "Operating System :: OS Independent",
     "Intended Audience :: Developers",
@@ -26,13 +26,13 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 glob_pattern = ">=0.0.2"
 httpx = "*"
 httpx_request = ">=0.0.8.2"
 magnet2torrent = "*"
 orjson = "*"
-p115client = ">=0.0.3.11"
+p115client = ">=0.0.5.12.2"
 posixpatht = ">=0.0.4"
 python-asynctools = ">=0.0.7"
 python-concurrenttools = ">=0.0.3"
@@ -42,7 +42,7 @@ python-filewrap = ">=0.2.6"
 python-hashtools = ">=0.0.3.3"
 python-httpfile = ">=0.0.4"
 python-http_request = ">=0.0.6"
-python-iterutils = ">=0.2.1"
+python-iterutils = ">=0.2.4.1"
 python-texttools = ">=0.0.2"
 python-urlopen = ">=0.0.6"
 python-undefined = "*"

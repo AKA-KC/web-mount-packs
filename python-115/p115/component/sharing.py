@@ -159,7 +159,7 @@ class P115Sharing:
                 request=self.async_request if async_ else self.request, 
                 async_=async_, 
             )))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def code_of(
@@ -193,7 +193,7 @@ class P115Sharing:
                 default=undefined, 
                 async_=async_, 
             ))["share_code"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     def get(
         self, 
@@ -235,7 +235,7 @@ class P115Sharing:
             if default is undefined:
                 raise LookupError(f"no such snap_id: {snap_id!r}")
             return default
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_length(
@@ -264,7 +264,7 @@ class P115Sharing:
                 async_request=self.async_request, 
             )
             return check_response(resp)["count"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def get_receive_path(
@@ -330,7 +330,7 @@ class P115Sharing:
                 ))
             else:
                 return any(item["snap_id"] == snap_id for item in self.iter())
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def iter(
@@ -444,7 +444,7 @@ class P115Sharing:
                 request=request, 
                 async_request=async_request, 
             ) for info in ls]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def list(
@@ -491,7 +491,7 @@ class P115Sharing:
                 async_=async_, 
             )
             return check_response(resp)["list"]
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def remove(
@@ -540,7 +540,7 @@ class P115Sharing:
                 request=self.async_request if async_ else self.request, 
                 async_=async_, 
             )))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
     @overload
     def update(
@@ -588,5 +588,5 @@ class P115Sharing:
                 request=self.async_request if async_ else self.request, 
                 async_=async_, 
             )))
-        return run_gen_step(gen_step, async_=async_)
+        return run_gen_step(gen_step, async_)
 
